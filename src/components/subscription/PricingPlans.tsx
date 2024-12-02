@@ -1,8 +1,7 @@
 import React from 'react';
-import { CheckCircle, ArrowLeft } from 'lucide-react';
+import { CheckCircle } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 import { useAuthStore } from '../../store/authStore';
-import { useNavigate } from 'react-router-dom';
 
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
@@ -34,7 +33,6 @@ const plans = [
 
 export default function PricingPlans() {
   const { user } = useAuthStore();
-  const navigate = useNavigate();
 
   const handleSubscribe = async (planId: string) => {
     if (!user) return;
@@ -53,16 +51,6 @@ export default function PricingPlans() {
 
   return (
     <div className="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-7xl mx-auto mb-6">
-        <button
-          onClick={() => navigate('/dashboard')}
-          className="flex items-center text-gray-600 hover:text-gray-900"
-        >
-          <ArrowLeft className="w-5 h-5 mr-2" />
-          Uygulamaya Dön
-        </button>
-      </div>
-
       <div className="max-w-7xl mx-auto">
         <div className="text-center">
           <h2 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">

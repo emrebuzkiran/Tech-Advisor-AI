@@ -10,7 +10,9 @@ Project Details:
 - Budget: ${requirements.budget}
 - Timeline: ${requirements.timeline}
 - Team Size: ${requirements.team}
-- Description: ${requirements.description}
+
+Project Description:
+${requirements.description}
 
 Please provide recommendations in the following JSON format:
 {
@@ -22,11 +24,11 @@ Please provide recommendations in the following JSON format:
       "cons": ["con1", "con2", ...],
       "useCase": "Best use case description",
       "score": 0.95,
-      "aiInsights": "Detailed analysis of why this stack is recommended",
+      "aiInsights": "Detailed analysis of why this stack is recommended for this specific project",
       "learningResources": ["resource1", "resource2", ...]
     }
   ],
-  "reasoning": "Overall analysis explanation"
+  "reasoning": "Overall analysis explanation considering the project description and requirements"
 }
 
 Focus on modern, production-ready technology stacks and consider factors like:
@@ -35,6 +37,6 @@ Focus on modern, production-ready technology stacks and consider factors like:
 - Budget constraints
 - Timeline requirements
 - Performance needs
-- Description of the project
-`;
-}
+- Specific project requirements from the description`
+
+};

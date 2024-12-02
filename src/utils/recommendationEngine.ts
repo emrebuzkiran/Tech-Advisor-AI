@@ -27,7 +27,7 @@ async function getAIRecommendations(requirements: ProjectRequirements): Promise<
   
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5",
+      model: "gpt-3.5-turbo", // Fixed model name
       messages: [
         {
           role: "system",
