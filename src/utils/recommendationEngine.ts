@@ -1,4 +1,4 @@
-import { ProjectRequirements, TechnologyRecommendation, AIAnalysisResult } from '../types';
+import { ProjectRequirements, TechnologyRecommendation, AIAnalysisResult } from '../types/index';
 import { openai } from '../config/openai';
 import { buildAnalysisPrompt } from './promptBuilder';
 
@@ -6,15 +6,7 @@ export async function analyzeTechStack(requirements: ProjectRequirements): Promi
   try {
     // Get AI-powered recommendations
     const aiRecommendations = await getAIRecommendations(requirements);
-    
-    // Combine with static recommendations
-    const staticRecommendations = getStaticRecommendations(requirements);
-    
-    // Merge and sort recommendations
-    const allRecommendations = [...aiRecommendations.recommendations, ...staticRecommendations]
-      .sort((a, b) => b.score - a.score);
-
-    return allRecommendations;
+    return aiRecommendations.recommendations;
   } catch (error) {
     console.error('Error getting AI recommendations:', error);
     // Fallback to static recommendations if AI fails
@@ -27,7 +19,7 @@ async function getAIRecommendations(requirements: ProjectRequirements): Promise<
   
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", // Fixed model name
+      model: "gpt-4o-mini",
       messages: [
         {
           role: "system",
@@ -39,6 +31,7 @@ async function getAIRecommendations(requirements: ProjectRequirements): Promise<
         }
       ],
       temperature: 0.7,
+      max_tokens: 2000
     });
 
     const response = completion.choices[0]?.message?.content;
@@ -60,35 +53,52 @@ function getStaticRecommendations(requirements: ProjectRequirements): Technology
   const recommendations: TechnologyRecommendation[] = [];
 
   if (requirements.type === 'web') {
-    if (requirements.scale === 'large' && requirements.performance === 'high') {
-      recommendations.push({
-        name: 'Next.js + TypeScript',
-        description: 'Enterprise-grade React framework with SSR capabilities',
-        pros: ['Built-in SSR/SSG', 'Great TypeScript support', 'Excellent performance'],
-        cons: ['Learning curve', 'More complex setup'],
-        useCase: 'Large-scale web applications',
-        score: 0.95,
-        learningResources: [
-          'https://nextjs.org/learn',
-          'https://www.typescriptlang.org/docs/'
-        ]
-      });
-    }
-    
-    if (requirements.timeline === 'short' && requirements.budget === 'limited') {
-      recommendations.push({
-        name: 'Create React App',
-        description: 'Quick setup for React applications',
-        pros: ['Fast setup', 'Good documentation', 'Large community'],
-        cons: ['Limited configuration', 'No SSR by default'],
-        useCase: 'Small to medium web applications',
-        score: 0.85,
-        learningResources: [
-          'https://create-react-app.dev/docs/getting-started',
-          'https://reactjs.org/tutorial/tutorial.html'
-        ]
-      });
-    }
+    recommendations.push({
+      name: 'Modern Web Stack',
+      description: 'A robust and scalable web development stack',
+      pros: [
+        'Strong ecosystem',
+        'Great developer experience',
+        'Excellent performance',
+        'Strong typing support'
+      ],
+      cons: [
+        'Learning curve for beginners',
+        'Initial setup complexity'
+      ],
+      useCase: 'Modern web applications with scalability requirements',
+      score: 0.95,
+      aiInsights: 'This stack provides an excellent foundation for web development with modern best practices.',
+      learningResources: [
+        'https://react.dev',
+        'https://www.typescriptlang.org/docs/',
+        'https://tailwindcss.com/docs'
+      ]
+    });
+  }
+
+  if (requirements.type === 'mobile') {
+    recommendations.push({
+      name: 'Cross-platform Mobile Stack',
+      description: 'Efficient mobile development with code sharing',
+      pros: [
+        'Single codebase for iOS and Android',
+        'Native performance',
+        'Large community',
+        'Rich ecosystem'
+      ],
+      cons: [
+        'Platform-specific code sometimes needed',
+        'Native expertise still valuable'
+      ],
+      useCase: 'Cross-platform mobile applications',
+      score: 0.9,
+      aiInsights: 'Ideal for teams wanting to target both iOS and Android with a single codebase.',
+      learningResources: [
+        'https://reactnative.dev',
+        'https://expo.dev/learn'
+      ]
+    });
   }
 
   return recommendations;

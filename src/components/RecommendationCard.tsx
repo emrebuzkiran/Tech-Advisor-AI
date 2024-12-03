@@ -1,5 +1,5 @@
 import React from "react";
-import { TechnologyRecommendation } from "../types";
+import { TechnologyRecommendation } from "../types/index";
 import { CheckCircle, XCircle, BookOpen, Brain } from "lucide-react";
 
 interface Props {

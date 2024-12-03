@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { ProjectRequirements, TechnologyRecommendation } from '../types';
+import { ProjectRequirements, TechnologyRecommendation } from '../types/index';
 
 const openai = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
